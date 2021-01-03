@@ -1,0 +1,28 @@
+{
+    "name": "subot",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "audio-loader": "^1.0.3",
+        "bluebird": "^3.7.2",
+        "ffmpeg": "0.0.4",
+        "fluent-ffmpeg": "^2.1.2",
+        "form-data": "^3.0.0",
+        "get-audio-duration": "^2.0.2",
+        "global-agent": "^2.1.12",
+        "google-tts-api": "^2.0.0",
+        "got": "^11.8.0",
+        "nedb": "^1.8.0",
+        "sqlite": "^4.0.17",
+        "sqlite3": "^5.0.0",
+        "telegraf": "^3.38.0",
+        "tunnel": "0.0.6"
+    }
+}
