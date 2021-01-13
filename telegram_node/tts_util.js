@@ -1,10 +1,10 @@
 const googleTTS = require('google-tts-api');
 const audioLoader = require('audio-loader')
 // var ffmpeg = require('ffmpeg');
-var ffmpeg = require('fluent-ffmpeg');
+// var ffmpeg = require('fluent-ffmpeg');
 const fs = require("fs");
 const {Readable} = require('stream')
-const {getAudioDurationInSeconds} = require('get-audio-duration');
+// const {getAudioDurationInSeconds} = require('get-audio-duration');
 const audioDecode = require('./su-audio-decode')
 // var command = new FfmpegCommand();
 

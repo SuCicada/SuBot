@@ -7,6 +7,11 @@ class SuBot {
     constructor(BOT_TOKEN) {
         // this.BOT_TOKEN = BOT_TOKEN
         this.bot = new Telegraf(BOT_TOKEN)
+        this.registerCommand = this.bot.command
+    }
+
+    getBot() {
+        return this.bot
     }
 
     rememberChat(chat) {
@@ -14,9 +19,9 @@ class SuBot {
         return this
     }
 
-    sendVoice(data, duration) {
+    sendVoice({chatId = this.chat, data, duration}) {
         this.bot.telegram
-            .sendVoice(this.chat,
+            .sendVoice(chatId,
                 {source: data},
                 {duration: duration})
             .then(r => console.log(r))
@@ -24,10 +29,13 @@ class SuBot {
 
     start() {
         this.bot
+            .start(ctx => {
+                ctx.reply('Welcome!').catch(r => console.error(r))
+            })
             .on('text', (ctx) => {
                 console.log(ctx.message)
                 console.log(ctx.chat.id)
-                ctx.reply('Hello World')
+                // ctx.reply('Hello World')
             })
             .launch()
             .then(r => {
