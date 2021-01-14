@@ -1,5 +1,4 @@
 const {Telegraf} = require('telegraf')
-require('./proxy')
 
 // BOT_TOKEN = "1227008831:AAGYjAXdXIwcDYv13dD61mpfZsrWSEXhfr8"
 

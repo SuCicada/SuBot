@@ -1,3 +1,4 @@
+// import _ from 'config'
 // const httpUtil = require('./http_util')
 const {SuBot} = require("./bot");
 const {SqliteUtil} = require("./sqlite_util");
@@ -8,6 +9,7 @@ const ttsUtil = require("./tts_util")
 
 const CONFIG = require('./config');
 // const {TELEGRAM_TOKEN, TELEGRAM_USER} = require('./config.js');
+require('./proxy')
 
 table = CONFIG.TABLE
 dbFile = CONFIG.DB_PATH
@@ -21,13 +23,17 @@ const suBot = new SuBot(BOT_TOKEN)
 //     ,sqliteUtil.getDB()
 // ])
 
-text = "僕の肋骨を蹴ってください";
+// text = "僕の肋骨を蹴ってください";
+text = "僕の肋骨を蹴ってください12313";
 
 function sendVoice({chatId, text}) {
     (async () => {
         let voice, duration;
         let res = await sqliteUtil.get(text)
+        console.log(res)
         if (!res) {
+            // let res = await ttsUtil.getUrl(text)
+            // console.log("res:  " + res)
             ({voice, duration} = await ttsUtil.getVoice(text))
             sqliteUtil.add(text, voice, duration)
                 .then(console.log)
@@ -35,19 +41,20 @@ function sendVoice({chatId, text}) {
             ({voice, duration} = res)
         }
         console.log(voice, duration)
-        suBot.sendVoice({chatId, data:voice, duration})
+        suBot.sendVoice({chatId, data: voice, duration})
     })()
 }
 
-// sendVoice(text)
 
 suBot.getBot().command('talk', (ctx) => {
+    // console.log(ctx)
     sendVoice({
         chatId: ctx.from.id,
         text: ctx.message.text.substr('/talk '.length)
     })
 })
 suBot.start()
+// sendVoice({text})
 
 // then(([response, db]) => {
 //     console.log(response.rawBody)
