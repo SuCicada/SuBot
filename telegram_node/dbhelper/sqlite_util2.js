@@ -5,8 +5,7 @@ const splitter = require('sqlite');
 // this.table = "nihongo"
 // this .dbFile = "nihongo.sqlite"
 
-
-class SqliteUtil {
+class SqliteUtil2 {
 
     constructor(table, dbFile) {
         this.table = table
@@ -15,6 +14,7 @@ class SqliteUtil {
     }
 
     getDB() {
+        let a = "sdfs"
         return this.db !== undefined ? this.db :
             (async () => {
                 const db = await splitter.open({

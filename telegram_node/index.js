@@ -1,7 +1,20 @@
 // import _ from 'config'
 // const httpUtil = require('./http_util')
 const {SuBot} = require("./bot");
-const {SqliteUtil} = require("./sqlite_util");
+// const {SqliteUtil} = require("./sqlite_util");
+const {SqlUtil} = require('./dbhelper/sql_util')
+const {SqliteConnection} = require('./dbhelper/sqlite_connection')
+const {MySqlConnection} = require('./dbhelper/mysql_connection')
+// con = new SqliteConnection('./nihongo.sqlite', 'nihongo')
+con = new MySqlConnection({
+    host: 'sucicada.cf',
+    table: 'nihongo',
+    user: 'root',
+    password: 'sa',
+    database: 'nihongo'
+})
+const sqlUtil = new SqlUtil(con)
+
 const ttsUtil = require("./tts_util")
 // const {getAudioDurationInSeconds} = require('get-audio-duration');
 
@@ -13,7 +26,7 @@ require('./proxy')
 
 table = CONFIG.TABLE
 dbFile = CONFIG.DB_PATH
-const sqliteUtil = new SqliteUtil(table, dbFile)
+// const sqliteUtil = new SqliteUtil(table, dbFile)
 BOT_TOKEN = CONFIG.TELEGRAM_TOKEN
 chat = CONFIG.TELEGRAM_USER
 const suBot = new SuBot(BOT_TOKEN)
@@ -29,13 +42,11 @@ text = "僕の肋骨を蹴ってください12313";
 function sendVoice({chatId, text}) {
     (async () => {
         let voice, duration;
-        let res = await sqliteUtil.get(text)
+        let res = await sqlUtil.get(text)
         console.log(res)
         if (!res) {
-            // let res = await ttsUtil.getUrl(text)
-            // console.log("res:  " + res)
             ({voice, duration} = await ttsUtil.getVoice(text))
-            sqliteUtil.add(text, voice, duration)
+            sqlUtil.add(text, voice, duration)
                 .then(console.log)
         } else {
             ({voice, duration} = res)
