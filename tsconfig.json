@@ -12,7 +12,7 @@
     "watch":true
   },
   "include":[
-    "./src/**/*"
+    "./**/*"
   ],
   "exclude":[
 //    "./src/test/*"

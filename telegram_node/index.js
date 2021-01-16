@@ -10,7 +10,8 @@ const {SqliteConnection} = require('./dbhelper/sqlite_connection')
 const {MySqlConnection} = require('./dbhelper/mysql_connection')
 // con = new SqliteConnection('./nihongo.sqlite', 'nihongo')
 const fs = require('fs')
-yamlConfig = fs.readFileSync('./config.yaml', 'utf8')
+configFile = global.SuBotConfig
+yamlConfig = fs.readFileSync(configFile, 'utf8')
 config = YAML.parse(yamlConfig)
 const sqlUtil = SqlUtil.build(config['DB'])
 // con = new MySqlConnection({
@@ -60,7 +61,8 @@ function sendVoice({chatId, text}) {
             sqlUtil.add(text, voice, duration)
                 .then(r => console.log(`save voice into database success: ${text}`))
         } else {
-            console.log(`get voice from database: ${text}`)
+            // 加分号, 不然会认为下下一行的括号是函数传参调用
+            console.log(`get voice from database: ${text}`);
             ({voice, duration} = res)
         }
         console.log(text, duration)
