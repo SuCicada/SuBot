@@ -1,3 +1,5 @@
+import {Float} from "typegram";
+
 const sqlite3 = require('sqlite3').verbose();
 const splitter = require('sqlite');
 // var {Promise} = require('bluebird');
@@ -19,20 +21,24 @@ export abstract class Connection {
 
     // abstract open(): Promise<any>
 
-    abstract exec(sql, ...params: any[]): Promise<any>
+    abstract exec(sql: string, ...params: any[]): Promise<any>
 
     /**
      * mysql 和 sqlite 插入blob时语法不一样.
      */
-    insert(table, params: object): Promise<any> {
+    insert(table: string, params: object): Promise<any> {
         return this.exec(`INSERT INTO ${this.table}
             (${Object.keys(params).map(k => `'${k}'`).join(',')})
             VALUES
             (${Object.values(params).map(k => `'${k}'`).join(',')})`)
     }
 
-    abstract select(sql, ...params: any[]): Promise<any>
+    abstract select(sql: string, ...params: any[]): Promise<any>
 }
+
+// interface DBConfig extends Object{
+//     type: string
+// }
 
 export class SqlUtil {
     // private conn: Conn
@@ -49,7 +55,9 @@ export class SqlUtil {
     }
 
     static build(config: object) {
+        // @ts-ignore
         let type = config['type']
+        // @ts-ignore
         let sqlConf = config[type]
         // let aa = import('./mysql_connection')
         let connection = require(`./${type}_connection`)
@@ -71,7 +79,7 @@ export class SqlUtil {
 // });
 // }
 
-    add(text, voice, duration) {
+    add(text: string, voice: Buffer, duration: Float) {
         return this.connection
             // ('text', 'voice', 'duration')
             .insert(this.connection.table,
@@ -88,7 +96,7 @@ export class SqlUtil {
         // )
     }
 
-    get(text): Promise<any> {
+    get(text: string): Promise<any> {
         return this.connection
             .select(`select voice,duration from ${this.connection.table}
                     where text='${text.trim()}' limit 1`)

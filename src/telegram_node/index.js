@@ -10,9 +10,9 @@ const {SqliteConnection} = require('./dbhelper/sqlite_connection')
 const {MySqlConnection} = require('./dbhelper/mysql_connection')
 // con = new SqliteConnection('./nihongo.sqlite', 'nihongo')
 const fs = require('fs')
-configFile = global.SuBotConfig
-yamlConfig = fs.readFileSync(configFile, 'utf8')
-config = YAML.parse(yamlConfig)
+const configFile = global.SuBotConfig
+const yamlConfig = fs.readFileSync(configFile, 'utf8')
+const config = YAML.parse(yamlConfig)
 const sqlUtil = SqlUtil.build(config['DB'])
 // con = new MySqlConnection({
 //     host: 'sucicada.cf',
@@ -37,8 +37,8 @@ require('./proxy')(config['PROXY'])
 // table = CONFIG.TABLE
 // dbFile = CONFIG.DB_PATH
 // const sqliteUtil = new SqliteUtil(table, dbFile)
-BOT_TOKEN = config['TELEGRAM_TOKEN']
-chat = config['TELEGRAM_USER']
+const BOT_TOKEN = config['TELEGRAM_TOKEN']
+const chat = config['TELEGRAM_USER']
 const suBot = new SuBot(BOT_TOKEN)
     .rememberChat(chat)
 // Promise.all([
@@ -56,7 +56,7 @@ function sendVoice({chatId, text}) {
             return
         let res = await sqlUtil.get(text)
         if (!res || res.length === 0) {
-            console.log(`get voice from google tts: ${text}`)
+            console.log(`get voice from google tts: ${text}`);
             ({voice, duration} = await ttsUtil.getVoice(text))
             sqlUtil.add(text, voice, duration)
                 .then(r => console.log(`save voice into database success: ${text}`))

@@ -10,6 +10,7 @@ export default class SqliteConnection extends Connection {
 
     conn: Promise<void | sqlite.Database>
 
+    // @ts-ignore
     constructor({dbPath, table}) {
         super(dbPath, table);
         this.conn = sqlite.open({
@@ -18,26 +19,30 @@ export default class SqliteConnection extends Connection {
         }).catch(r => console.error(r))
     }
 
-    exec(sql, ...params: any[]) {
+    exec(sql: string, ...params: any[]): Promise<any> {
+        // @ts-ignore
         return this.conn.then((c: sqlite.Database) => c.run(sql, params))
     }
 
-    insert(table, params: object): Promise<any> {
+    insert(table: string, params: object): Promise<any> {
         // `(${Object.keys(params).map(k => `'${k}'`).join(',')})`
         let newParams = {};
         Object.entries(params).forEach(kv => {
+            // @ts-ignore
             newParams[`$${kv[0]}`] = kv[1]
         })
-        return this.conn.then(
-            (c: sqlite.Database) =>
-                c.run(`INSERT INTO ${this.table}
+        // @ts-ignore
+        return this.conn.then((c: sqlite.Database) => {
+            return c.run(`INSERT INTO ${this.table}
                     (${Object.keys(params).map(k => `'${k}'`).join(',')})
                     VALUES
                     (${Object.keys(params).map(k => `$${k}`).join(',')})`
-                    , newParams))
+                , newParams)
+        })
     }
 
-    select(sql, ...params: any[]) {
+    select(sql: string, ...params: any[]) {
+        // @ts-ignore
         return this.conn.then((c: sqlite.Database) => c.all(sql, params))
     }
 }
