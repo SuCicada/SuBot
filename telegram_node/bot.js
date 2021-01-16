@@ -19,11 +19,16 @@ class SuBot {
     }
 
     sendVoice({chatId = this.chat, data, duration}) {
+        console.log()
         this.bot.telegram
             .sendVoice(chatId,
                 {source: data},
                 {duration: duration})
-            .then(r => console.log(r))
+            .then(r => {
+                console.log(`send voice to ${r.message_id} duration: ${r.voice.duration}`)
+                return r
+            })
+            .catch(r => console.error(r))
     }
 
     start() {
@@ -38,7 +43,6 @@ class SuBot {
             })
             .launch()
             .then(r => {
-                console.log(r)
                 console.log("bot 已启动")
             })
 
